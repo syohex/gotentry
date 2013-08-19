@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/xml"
-	"flag"
 	"fmt"
+	flag "github.com/ogier/pflag"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -35,8 +35,8 @@ func hotentryUrl(keyword string, threshold int) string {
 }
 
 func main() {
-	threshold := flag.Int("t", 3, "threshold of bookmarks")
-	limit := flag.Int("l", 10, "limit of printing entries")
+	threshold := flag.IntP("threshold", "t", 3, "threshold of bookmarks")
+	limit := flag.IntP("limit", "l", 10, "limit of printing entries")
 	flag.Parse()
 
 	key := flag.Arg(0)
