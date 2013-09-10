@@ -36,7 +36,7 @@ func hotentryUrl(keyword string, threshold int) string {
 
 func main() {
 	threshold := flag.IntP("threshold", "t", 3, "threshold of bookmarks")
-	limit := flag.IntP("limit", "l", 10, "limit of printing entries")
+	limit := flag.IntP("limit", "l", 0, "limit of printing entries")
 	flag.Parse()
 
 	key := flag.Arg(0)
@@ -66,8 +66,16 @@ func main() {
 	}
 
 	if *limit > len(rss.Item) {
-		fmt.Printf("Limit '%s' is too long", *limit)
+		if *limit != 0 {
+			fmt.Printf("Limit '%d' is too long\n", *limit)
+		}
 		*limit = len(rss.Item)
+	} else if *limit == 0 {
+		if len(rss.Item) < 10 {
+			*limit = len(rss.Item)
+		} else {
+			*limit = 10
+		}
 	}
 
 	for i, item := range rss.Item[:*limit] {
