@@ -12,4 +12,4 @@ Then `gotentry` command is installed `$GOPATH/bin`.
 
 ## Screenshot
 
-[gotentry](image/gotentry.png)
+![gotentry](image/gotentry.png)
