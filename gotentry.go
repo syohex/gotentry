@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	flag "github.com/ogier/pflag"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+
+	flag "github.com/ogier/pflag"
 )
 
 type RSS struct {
@@ -37,6 +38,7 @@ func hotentryUrl(keyword string, threshold int) string {
 func main() {
 	threshold := flag.IntP("threshold", "t", 3, "threshold of bookmarks")
 	limit := flag.IntP("limit", "l", 0, "limit of printing entries")
+	peco := flag.BoolP("peco", "p", false, "title and url are joined by null chracter")
 	flag.Parse()
 
 	key := flag.Arg(0)
@@ -79,6 +81,11 @@ func main() {
 	}
 
 	for i, item := range rss.Item[:*limit] {
-		fmt.Printf("%2d: %s [%d]\n", i+1, item.Title, item.Bookmarks)
+		if *peco {
+			fmt.Printf("%2d: %s [%d]\x00%s\n",
+				i+1, item.Title, item.Bookmarks, item.Link)
+		} else {
+			fmt.Printf("%2d: %s [%d]\n", i+1, item.Title, item.Bookmarks)
+		}
 	}
 }
